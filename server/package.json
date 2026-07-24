@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
+    "build": "node -e \"console.log('server: plain JS, no build needed')\"",
     "dev": "nodemon --watch src src/index.js",
     "start": "node src/index.js",
     "typecheck": "echo 'no typescript in server yet'"
