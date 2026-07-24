@@ -1,6 +1,6 @@
 {
-  "rootDirectory": "app",
+  "framework": null,
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "outputDirectory": "dist"
+  "outputDirectory": "app/dist"
 }
