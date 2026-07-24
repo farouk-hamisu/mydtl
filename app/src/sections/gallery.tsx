@@ -36,7 +36,7 @@ export function Gallery() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[220px]">
           {items.slice(0, 12).map((g, i) => (
             <motion.figure
-              key={g.id ?? i}
+              key={i}
               variants={fadeUp} custom={i}
               initial="hidden" whileInView="show" viewport={viewport}
               className={`relative overflow-hidden rounded-card ring-1 ring-black/5 ${spanClass(i)}`}
