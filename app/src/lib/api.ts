@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const base = import.meta.env.VITE_API_BASE ?? '/api'
+const base = 'https://speedflightz.onrender.com/api'
 
 type FetchInit = RequestInit & { auth?: boolean; raw?: boolean }
 

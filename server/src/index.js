@@ -9,7 +9,10 @@ import publicRouter from './routes/public.js'
 import uploadsRouter from './routes/uploads.js'
 
 const app = express()
-app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(',') ?? true, credentials: true }))
+app.use(cors({
+  origin: ['https://speedflightz.vercel.app', 'http://localhost:5173'],
+  credentials: true,
+}))
 app.use(express.json({ limit: '12mb' }))
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }))
