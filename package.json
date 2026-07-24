@@ -1,0 +1,24 @@
+{
+  "name": "speedflightz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SpeedFlightz — premium international shipping & logistics platform",
+  "workspaces": [
+    "app",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,api -c magenta,cyan \"npm run dev -w app\" \"npm run dev -w server\"",
+    "dev:web": "npm run dev -w app",
+    "dev:api": "npm run dev -w server",
+    "build": "npm run build -w app",
+    "lint": "npm run lint -w app",
+    "typecheck": "npm run typecheck -w app && npm run typecheck -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  },
+  "dependencies": {
+    "sharp": "^0.35.3"
+  }
+}

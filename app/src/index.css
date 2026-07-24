@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/plusjakartasans/v8/LDIbaomQNQcsA88cOBOxYPMtFug_R4NjsZYf.woff2") format("woff2");
+  font-weight: 400 800;
+}
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-teal-950: #06222a;
+  --color-teal-900: #073039;
+  --color-teal-800: #0a444f;
+  --color-teal-700: #0e5a68;
+  --color-teal-600: #137589;
+  --color-teal-500: #189cb5;
+
+  --color-flame-50: #fff5ed;
+  --color-flame-100: #ffe8d4;
+  --color-flame-200: #ffcfa8;
+  --color-flame-300: #ffac6f;
+  --color-flame-400: #ff8333;
+  --color-flame-500: #f96216;
+  --color-flame-600: #ea4a08;
+  --color-flame-700: #c2350a;
+
+  --color-ink-900: #0c1a1d;
+  --color-ink-800: #15292d;
+  --color-ink-700: #1f3a3f;
+  --color-ink-600: #2c5157;
+
+  --color-paper: #ffffff;
+  --color-mist: #f4f7f8;
+
+  --radius-card: 1.5rem;
+  --radius-pill: 999px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink-900);
+  background: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+::selection { background: var(--color-flame-500); color: #fff; }
+
+.leaflet-container { font-family: var(--font-sans) !important; }
+
+.noise {
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.text-balance { text-wrap: balance; }
+
+@keyframes float-soft { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
+.animate-float-soft { animation: float-soft 6s ease-in-out infinite; }
+
+@keyframes marquee { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
+.animate-marquee { animation: marquee 28s linear infinite; }
+
+@keyframes dash { from { stroke-dashoffset: 120 } to { stroke-dashoffset: 0 } }
+.animate-dash { stroke-dasharray: 8 8; animation: dash 3s linear infinite; }
+
+@keyframes ping { 0% { transform: scale(1); opacity: 0.3 } 50% { transform: scale(1.4); opacity: 0.1 } 100% { transform: scale(1); opacity: 0.3 } }
