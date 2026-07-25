@@ -2,6 +2,7 @@ import { Outlet } from '@tanstack/react-router'
 import { Suspense } from 'react'
 import { Header } from './header'
 import { Footer } from './footer'
+import { WhatsAppButton } from './whatsapp-button'
 
 export function RootLayout() {
   return (
@@ -13,6 +14,7 @@ export function RootLayout() {
         </Suspense>
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   )
 }
