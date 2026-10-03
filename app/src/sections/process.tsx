@@ -11,11 +11,11 @@ const steps = [
 
 export function Process() {
   return (
-    <section className="relative bg-mist py-28 overflow-hidden">
+    <section className="relative bg-dtl-light-gray py-28 overflow-hidden">
       <div className="mx-auto max-w-[1320px] px-6">
         <div className="text-center max-w-2xl mx-auto">
           <SectionLabel className="mx-auto">How it works</SectionLabel>
-          <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-teal-950 leading-[1.08] text-balance">
+          <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-dtl-black leading-[1.08] text-balance">
             From your door to their door, in four precise moves.
           </h2>
         </div>
@@ -25,17 +25,17 @@ export function Process() {
           {steps.map((s, i) => (
             <motion.div key={s.n} variants={fadeUp} custom={i} className="relative">
               <div className="flex items-center gap-3">
-                <span className="grid size-14 place-items-center rounded-card bg-teal-950 text-flame-500 text-xl font-bold ring-4 ring-mist">
+                <span className="grid size-14 place-items-center rounded-card bg-dtl-black text-dtl-yellow text-xl font-bold ring-4 ring-dtl-light-gray">
                   {s.n}
                 </span>
                 {i < steps.length - 1 && (
-                  <svg viewBox="0 0 80 12" className="w-full h-3 text-teal-300" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg viewBox="0 0 80 12" className="w-full h-3 text-dtl-border" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="0" y1="6" x2="80" y2="6" strokeDasharray="6 6" />
                   </svg>
                 )}
               </div>
-              <h3 className="mt-5 text-xl font-bold text-teal-950">{s.t}</h3>
-              <p className="mt-2 text-base text-ink-600 leading-relaxed">{s.d}</p>
+              <h3 className="mt-5 text-xl font-bold text-dtl-black">{s.t}</h3>
+              <p className="mt-2 text-base text-dtl-charcoal leading-relaxed">{s.d}</p>
             </motion.div>
           ))}
         </motion.div>

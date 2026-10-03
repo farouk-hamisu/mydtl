@@ -26,11 +26,11 @@ export function Gallery() {
         <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
           <div>
             <SectionLabel>Our work in motion</SectionLabel>
-            <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-teal-950 leading-[1.08] text-balance max-w-2xl">
+            <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-dtl-black leading-[1.08] text-balance max-w-2xl">
               Photographs from the field — ports, planes, and pallets.
             </h2>
           </div>
-          <a href="/gallery" className="inline-flex items-center gap-2 text-sm font-semibold text-flame-600 hover:text-teal-900">View full gallery →</a>
+          <a href="/gallery" className="inline-flex items-center gap-2 text-sm font-semibold text-dtl-red hover:text-dtl-black">View full gallery →</a>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[220px]">
@@ -39,11 +39,11 @@ export function Gallery() {
               key={i}
               variants={fadeUp} custom={i}
               initial="hidden" whileInView="show" viewport={viewport}
-              className={`relative overflow-hidden rounded-card ring-1 ring-black/5 ${spanClass(i)}`}
+              className={`relative overflow-hidden rounded-card ring-1 ring-dtl-border ${spanClass(i)}`}
             >
               <img src={g.url} alt={g.title || ''} className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
-              <figcaption className="absolute inset-0 bg-gradient-to-t from-teal-950/80 via-teal-950/10 to-transparent p-5 flex flex-col justify-end text-white">
-                {g.category && <span className="text-[10px] uppercase tracking-[0.18em] font-bold text-flame-400">{g.category}</span>}
+              <figcaption className="absolute inset-0 bg-gradient-to-t from-dtl-charcoal/80 via-dtl-charcoal/10 to-transparent p-5 flex flex-col justify-end text-white">
+                {g.category && <span className="text-[10px] uppercase tracking-[0.18em] font-bold text-dtl-yellow">{g.category}</span>}
                 {g.title && <p className="text-base font-semibold">{g.title}</p>}
               </figcaption>
             </motion.figure>

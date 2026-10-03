@@ -2,7 +2,7 @@ import { SectionLabel } from '../sections/_section'
 export function ServicesPage() {
   return (
     <div className="bg-white min-h-screen">
-      <section className="relative bg-teal-950 text-white py-20 overflow-hidden">
+      <section className="relative bg-dtl-charcoal text-white py-20 overflow-hidden">
         <div className="absolute inset-0 grid-overlay opacity-30" />
         <div className="relative mx-auto max-w-[1320px] px-6">
           <SectionLabel>Our services</SectionLabel>
@@ -18,9 +18,9 @@ export function ServicesPage() {
           { t: 'Warehousing', d: 'Secure storage, pick & pack, inventory management, and distribution from bonded facilities.', img: '/warehouse.jpg' },
           { t: 'Express Courier', d: 'Time-critical small parcels with door-to-door tracking and expedited customs clearance.', img: '/courier.jpg' },
         ].map(s => (
-          <div key={s.t} className="rounded-card overflow-hidden ring-1 ring-black/5 shadow-[0_40px_120px_-40px_rgba(7,80,89,0.35)]">
+          <div key={s.t} className="rounded-card overflow-hidden ring-1 ring-dtl-border shadow-[0_40px_120px_-40px_rgba(0,0,0,0.35)]">
             <img src={s.img} alt={s.t} className="w-full h-56 object-cover" />
-            <div className="p-6"><h3 className="text-2xl font-bold text-teal-950">{s.t}</h3><p className="mt-2 text-base text-ink-600 leading-relaxed">{s.d}</p></div>
+            <div className="p-6"><h3 className="text-2xl font-bold text-dtl-black">{s.t}</h3><p className="mt-2 text-base text-dtl-charcoal leading-relaxed">{s.d}</p></div>
           </div>
         ))}
       </section>

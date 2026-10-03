@@ -40,7 +40,7 @@ export function GalleryPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <section className="relative bg-teal-950 text-white py-20 overflow-hidden">
+      <section className="relative bg-dtl-charcoal text-white py-20 overflow-hidden">
         <div className="absolute inset-0 grid-overlay opacity-30" />
         <img
           src="/oceancargoship.jpg"
@@ -49,18 +49,18 @@ export function GalleryPage() {
         <div className="relative mx-auto max-w-[1320px] px-6">
           <SectionLabel>Gallery</SectionLabel>
           <h1 className="mt-4 text-4xl lg:text-[3.2rem] font-bold leading-[1.08] text-balance">Moments that move the world.</h1>
-          <p className="mt-4 max-w-xl text-lg text-teal-100/80">A visual journey through our global freight operations — from port to plane to your doorstep.</p>
+          <p className="mt-4 max-w-xl text-lg text-white/80">A visual journey through our global freight operations — from port to plane to your doorstep.</p>
         </div>
       </section>
       <section className="mx-auto max-w-[1320px] px-6 py-20">
         {loading && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="aspect-[4/3] rounded-card bg-ink-100 animate-pulse" />
+              <div key={i} className="aspect-[4/3] rounded-card bg-dtl-border animate-pulse" />
             ))}
           </div>
         )}
-        {error && !items.length && <p className="text-rose-600 text-center py-20">{error}</p>}
+        {error && !items.length && <p className="text-dtl-red text-center py-20">{error}</p>}
         {!loading && items.length > 0 && (
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
             {items.map((item, i) => (
@@ -68,14 +68,14 @@ export function GalleryPage() {
                 key={item.id}
                 variants={fadeUp} custom={i}
                 initial="hidden" whileInView="show" viewport={viewport}
-                className="break-inside-avoid rounded-card overflow-hidden ring-1 ring-black/5 shadow-[0_24px_60px_-32px_rgba(7,80,89,0.18)]"
+                className="break-inside-avoid rounded-card overflow-hidden ring-1 ring-dtl-border shadow-[0_24px_60px_-32px_rgba(0,0,0,0.18)]"
               >
                 <img src={item.url} alt={item.title ?? ''} className="w-full object-cover transition-transform duration-700 hover:scale-105" />
                 {item.title && (
                   <div className="p-4">
-                    <p className="text-sm font-semibold text-teal-950">{item.title}</p>
+                    <p className="text-sm font-semibold text-dtl-black">{item.title}</p>
                     {'category' in item && item.category && (
-                      <span className="mt-1 inline-block text-[10px] uppercase tracking-[0.18em] font-bold text-flame-600">{item.category}</span>
+                      <span className="mt-1 inline-block text-[10px] uppercase tracking-[0.18em] font-bold text-dtl-red">{item.category}</span>
                     )}
                   </div>
                 )}

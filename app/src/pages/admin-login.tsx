@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
-import { Button } from '../components/ui/primitives'
+import { Button, Input, Label } from '../components/ui/primitives'
 import { useNavigate } from '@tanstack/react-router'
 
 export function AdminLoginPage() {
@@ -18,32 +18,31 @@ export function AdminLoginPage() {
     try {
       await signIn(email, password)
       navigate({ to: '/admin' })
-    } catch (err: any) {
-      setError(err.message)
+    } catch {
+      setError('We couldn’t complete your request. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen grid place-items-center bg-mist px-6 py-20">
-      <div className="w-full max-w-md rounded-card bg-white ring-1 ring-black/5 shadow-[0_40px_120px_-40px_rgba(7,80,89,0.35)] p-8">
+    <div className="min-h-screen grid place-items-center bg-dtl-light-gray px-6 py-20">
+      <div className="w-full max-w-md rounded-card bg-white ring-1 ring-dtl-border shadow-[0_40px_120px_-40px_rgba(0,0,0,0.35)] p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-teal-950">Admin Login</h1>
-          <p className="mt-1 text-sm text-ink-600">Sign in to the administration panel</p>
+          <img src="/logo.png" alt="DTL" className="mx-auto h-20 w-auto rounded-lg" />
+          <h1 className="mt-5 text-2xl font-bold text-dtl-black">Admin Login</h1>
+          <p className="mt-1 text-sm text-dtl-charcoal">Sign in to the DTL administration panel</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-teal-950 mb-1.5">Email</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)}
-              className="w-full rounded-[14px] border border-black/10 bg-white px-4 py-3 text-sm text-teal-950 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-flame-500/40" placeholder="admin@speedflightz.com" />
+            <Label>Email</Label>
+            <Input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@dtl.com" />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-teal-950 mb-1.5">Password</label>
-            <input required type="password" value={password} onChange={e => setPassword(e.target.value)}
-              className="w-full rounded-[14px] border border-black/10 bg-white px-4 py-3 text-sm text-teal-950 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-flame-500/40" placeholder="••••••••" />
+            <Label>Password</Label>
+            <Input required type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
           </div>
-          {error && <p className="text-sm text-rose-600">{error}</p>}
+          {error && <p className="text-sm text-dtl-red">{error}</p>}
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? 'Signing in...' : 'Sign in'}
           </Button>

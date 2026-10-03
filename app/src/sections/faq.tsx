@@ -10,7 +10,7 @@ const faqs = [
   { q: 'How long does customs clearance take?', a: 'For routine shipments, customs clearance at major ports averages 6 hours after duties are settled. For inspections or holds, your dispatch desk will keep you posted every step of the way.' },
   { q: 'Can I track a shipment without an account?', a: 'Absolutely. Anyone with a valid tracking number can use the public Track page. Accounts are only needed to manage multiple shipments, receive notifications, or upload payment proof.' },
   { q: 'What payment methods are supported?', a: 'We currently support USDT (TRC20) and ACH / domestic wire. After payment, simply upload your receipt or transaction reference within the customer dashboard.' },
-  { q: 'What happens if my shipment is on hold?', a: 'If your shipment is placed under “Customs Hold” or “Awaiting Payment”, it remains fully trackable. You will see a clear reason and a payment notice if any outstanding fees are required to release it.' },
+  { q: 'What happens if my shipment is on hold?', a: 'If your shipment is placed under "Customs Hold" or "Awaiting Payment", it remains fully trackable. You will see a clear reason and a payment notice if any outstanding fees are required to release it.' },
 ]
 
 export function FAQ() {
@@ -21,11 +21,11 @@ export function FAQ() {
         <div className="grid lg:grid-cols-12 gap-14">
           <div className="lg:col-span-5">
             <SectionLabel>Helpful answers</SectionLabel>
-            <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-teal-950 leading-[1.08]">FAQ on tracking, customs, and payment.</h2>
-            <p className="mt-5 text-base text-ink-600 leading-relaxed">
+            <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-dtl-black leading-[1.08]">FAQ on tracking, customs, and payment.</h2>
+            <p className="mt-5 text-base text-dtl-charcoal leading-relaxed">
               Anything else on your mind? Reach out to our dispatch desk any time.
             </p>
-            <a href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-[14px] bg-teal-950 px-6 py-3.5 text-sm font-semibold text-white hover:bg-teal-800 transition">
+            <a href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-[14px] bg-dtl-black px-6 py-3.5 text-sm font-semibold text-white hover:bg-dtl-charcoal transition">
               Contact support →
             </a>
           </div>
@@ -35,13 +35,13 @@ export function FAQ() {
               const isOpen = open === i
               return (
                 <motion.div key={f.q} variants={fadeUp} custom={i}
-                  className="rounded-card ring-1 ring-black/5 bg-white overflow-hidden">
+                  className="rounded-card ring-1 ring-dtl-border bg-white overflow-hidden">
                   <button
-                    className={`flex w-full items-center justify-between gap-4 p-6 text-left ${isOpen ? 'bg-flame-500/5' : ''}`}
+                    className={`flex w-full items-center justify-between gap-4 p-6 text-left ${isOpen ? 'bg-dtl-yellow/5' : ''}`}
                     onClick={() => setOpen(isOpen ? null : i)}
                   >
-                    <span className="text-lg font-semibold text-teal-950">{f.q}</span>
-                    <span className={`grid size-9 place-items-center rounded-full transition ${isOpen ? 'bg-flame-500 text-white' : 'bg-mist text-teal-900'}`}>
+                    <span className="text-lg font-semibold text-dtl-black">{f.q}</span>
+                    <span className={`grid size-9 place-items-center rounded-full transition ${isOpen ? 'bg-dtl-yellow text-dtl-black' : 'bg-dtl-light-gray text-dtl-charcoal'}`}>
                       {isOpen ? <Minus className="size-4" /> : <Plus className="size-4" />}
                     </span>
                   </button>
@@ -50,7 +50,7 @@ export function FAQ() {
                     transition={{ duration: 0.32, ease: [0.22,1,0.36,1] }}
                     className="overflow-hidden"
                   >
-                    <p className="px-6 pb-6 text-base text-ink-700 leading-relaxed">{f.a}</p>
+                    <p className="px-6 pb-6 text-base text-dtl-charcoal leading-relaxed">{f.a}</p>
                   </motion.div>
                 </motion.div>
               )

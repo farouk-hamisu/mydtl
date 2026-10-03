@@ -34,26 +34,26 @@ export function initials(name?: string | null) {
 
 export function statusColor(s: string): string {
   return {
-    created: 'bg-slate-100 text-slate-700 ring-slate-200',
-    picked_up: 'bg-flame-100 text-flame-700 ring-flame-200',
-    in_transit: 'bg-teal-100 text-teal-800 ring-teal-200',
-    out_for_delivery: 'bg-flame-100 text-flame-700 ring-flame-200',
-    delivered: 'bg-emerald-100 text-emerald-700 ring-emerald-200',
-    awaiting_customs_clearance: 'bg-amber-100 text-amber-800 ring-amber-200',
-    awaiting_payment: 'bg-flame-500/10 text-flame-700 ring-flame-400/30',
-    customs_hold: 'bg-rose-100 text-rose-800 ring-rose-200',
-    payment_verification: 'bg-indigo-100 text-indigo-700 ring-indigo-200',
-    cancelled: 'bg-slate-200 text-slate-700 ring-slate-300',
-    on_hold: 'bg-slate-200 text-slate-700 ring-slate-300',
-    returned: 'bg-rose-100 text-rose-700 ring-rose-200',
-    paid: 'bg-emerald-100 text-emerald-700 ring-emerald-200',
-    unpaid: 'bg-rose-100 text-rose-700 ring-rose-200',
-    partially_paid: 'bg-amber-100 text-amber-800 ring-amber-200',
-    waived: 'bg-slate-100 text-slate-700 ring-slate-200',
-    pending: 'bg-amber-100 text-amber-800 ring-amber-200',
-    verified: 'bg-emerald-100 text-emerald-700 ring-emerald-200',
-    rejected: 'bg-rose-100 text-rose-700 ring-rose-200',
-  }[s] ?? 'bg-slate-100 text-slate-700 ring-slate-200'
+    created: 'bg-dtl-light-gray text-dtl-charcoal ring-dtl-border',
+    picked_up: 'bg-dtl-yellow/25 text-dtl-black ring-dtl-yellow/50',
+    in_transit: 'bg-dtl-charcoal/10 text-dtl-charcoal ring-dtl-charcoal/20',
+    out_for_delivery: 'bg-dtl-yellow/30 text-dtl-black ring-dtl-yellow/60',
+    delivered: 'bg-emerald-100 text-emerald-800 ring-emerald-200',
+    awaiting_customs_clearance: 'bg-dtl-yellow/25 text-dtl-black ring-dtl-yellow/50',
+    awaiting_payment: 'bg-dtl-red/10 text-dtl-red ring-dtl-red/30',
+    customs_hold: 'bg-dtl-red/10 text-dtl-red ring-dtl-red/30',
+    payment_verification: 'bg-dtl-light-gray text-dtl-charcoal ring-dtl-border',
+    cancelled: 'bg-dtl-light-gray text-dtl-charcoal ring-dtl-border',
+    on_hold: 'bg-dtl-light-gray text-dtl-charcoal ring-dtl-border',
+    returned: 'bg-dtl-red/10 text-dtl-red ring-dtl-red/30',
+    paid: 'bg-emerald-100 text-emerald-800 ring-emerald-200',
+    unpaid: 'bg-dtl-red/10 text-dtl-red ring-dtl-red/30',
+    partially_paid: 'bg-dtl-yellow/25 text-dtl-black ring-dtl-yellow/50',
+    waived: 'bg-dtl-light-gray text-dtl-charcoal ring-dtl-border',
+    pending: 'bg-dtl-yellow/25 text-dtl-black ring-dtl-yellow/50',
+    verified: 'bg-emerald-100 text-emerald-800 ring-emerald-200',
+    rejected: 'bg-dtl-red/10 text-dtl-red ring-dtl-red/30',
+  }[s] ?? 'bg-dtl-light-gray text-dtl-charcoal ring-dtl-border'
 }
 
 export function statusLabel(s: string): string {

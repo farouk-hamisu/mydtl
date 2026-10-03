@@ -17,11 +17,11 @@ export function WhyChoose() {
     <section className="bg-white py-28">
       <div className="mx-auto max-w-[1320px] px-6">
         <div className="text-center max-w-2xl mx-auto">
-          <SectionLabel className="mx-auto">Why SpeedFlightz</SectionLabel>
-          <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-teal-950 leading-[1.08] text-balance">
+          <SectionLabel className="mx-auto">Why DTL</SectionLabel>
+          <h2 className="mt-4 text-4xl lg:text-[3rem] font-bold text-dtl-black leading-[1.08] text-balance">
             Built for shippers who treat freight like craft.
           </h2>
-          <p className="mt-5 text-base text-ink-600 leading-relaxed">
+          <p className="mt-5 text-base text-dtl-charcoal leading-relaxed">
             We obsess over operational hygiene so you can ship with conviction — and prove it to your customers.
           </p>
         </div>
@@ -32,14 +32,14 @@ export function WhyChoose() {
             const Icon = r.icon
             return (
               <motion.div key={r.t} variants={fadeUp} custom={i}
-                className="group relative rounded-card bg-mist ring-1 ring-black/5 px-7 py-8 hover:bg-white hover:shadow-[0_40px_120px_-40px_rgba(7,80,89,0.4)] transition-all duration-300">
-                <span className="absolute right-6 top-6 text-teal-900/10 font-mono text-2xl font-bold">0{i+1}</span>
-                <span className="grid size-14 place-items-center rounded-card bg-teal-950 text-flame-500 ring-4 ring-white">
+                className="group relative rounded-card bg-dtl-light-gray ring-1 ring-dtl-border px-7 py-8 hover:bg-white hover:shadow-[0_40px_120px_-40px_rgba(0,0,0,0.4)] transition-all duration-300">
+                <span className="absolute right-6 top-6 text-dtl-border font-mono text-2xl font-bold">0{i+1}</span>
+                <span className="grid size-14 place-items-center rounded-card bg-dtl-black text-dtl-yellow ring-4 ring-white">
                   <Icon className="size-6" />
                 </span>
-                <h3 className="mt-5 text-xl font-bold text-teal-950">{r.t}</h3>
-                <p className="mt-2 text-base text-ink-600 leading-relaxed">{r.d}</p>
-                <div className="mt-5 h-0.5 w-10 bg-flame-500 rounded-full group-hover:w-20 transition-all duration-300" />
+                <h3 className="mt-5 text-xl font-bold text-dtl-black">{r.t}</h3>
+                <p className="mt-2 text-base text-dtl-charcoal leading-relaxed">{r.d}</p>
+                <div className="mt-5 h-0.5 w-10 bg-dtl-yellow rounded-full group-hover:w-20 transition-all duration-300" />
               </motion.div>
             )
           })}

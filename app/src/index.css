@@ -10,58 +10,49 @@
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
-  --color-teal-950: #06222a;
-  --color-teal-900: #073039;
-  --color-teal-800: #0a444f;
-  --color-teal-700: #0e5a68;
-  --color-teal-600: #137589;
-  --color-teal-500: #189cb5;
+  --color-dtl-yellow: #FFCC00;
+  --color-dtl-red: #D40511;
+  --color-dtl-black: #111111;
+  --color-dtl-charcoal: #242424;
+  --color-dtl-white: #FFFFFF;
+  --color-dtl-light-gray: #F5F5F5;
+  --color-dtl-border: #E2E2E2;
 
-  --color-flame-50: #fff5ed;
-  --color-flame-100: #ffe8d4;
-  --color-flame-200: #ffcfa8;
-  --color-flame-300: #ffac6f;
-  --color-flame-400: #ff8333;
-  --color-flame-500: #f96216;
-  --color-flame-600: #ea4a08;
-  --color-flame-700: #c2350a;
+  --color-success: #059669;
+  --color-success-bg: #ECFDF5;
+  --color-warning: #FFCC00;
+  --color-warning-bg: #FEF9C3;
+  --color-error: #D40511;
+  --color-error-bg: #FEF2F2;
 
-  --color-ink-900: #0c1a1d;
-  --color-ink-800: #15292d;
-  --color-ink-700: #1f3a3f;
-  --color-ink-600: #2c5157;
-
-  --color-paper: #ffffff;
-  --color-mist: #f4f7f8;
-
-  --radius-card: 1.5rem;
+  --radius-card: 1rem;
   --radius-pill: 999px;
 }
 
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-sans);
-  color: var(--color-ink-900);
-  background: var(--color-paper);
+  color: var(--color-dtl-black);
+  background: var(--color-dtl-white);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 * { -webkit-tap-highlight-color: transparent; }
 
-::selection { background: var(--color-flame-500); color: #fff; }
+::selection { background: var(--color-dtl-yellow); color: var(--color-dtl-black); }
 
 .leaflet-container { font-family: var(--font-sans) !important; }
 
 .noise {
-  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
   background-size: 4px 4px;
 }
 
 .grid-overlay {
   background-image:
-    linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
