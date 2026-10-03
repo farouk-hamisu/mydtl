@@ -33,8 +33,14 @@ function isAllowedOrigin(origin) {
   return false
 }
 
+// cors requires the origin option (when a function) to call cb(err, allow);
+// returning a value instead would never call next() and every request would hang.
+function originCallback(origin, cb) {
+  cb(null, isAllowedOrigin(origin) ? origin : false)
+}
+
 app.use(cors({
-  origin: isAllowedOrigin,
+  origin: originCallback,
   credentials: true,
 }))
 app.use(express.json({ limit: '12mb' }))
