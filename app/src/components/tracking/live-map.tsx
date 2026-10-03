@@ -114,8 +114,8 @@ export function LiveMap({
   return (
     <MapContainer className="h-full w-full" style={{ width: '100%', height: '100%', background: '#e8e4df' }}>
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>'
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+        attribution='&copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, FAO, NOAA, USGS, OpenStreetMap contributors'
       />
       <Polyline positions={routePoints} pathOptions={{ color: C.routeDash, weight: 3, dashArray: '10 8', opacity: 0.7 }} />
       <Polyline positions={routePoints} pathOptions={{ color: C.route, weight: 4, opacity: 0.35 }} />

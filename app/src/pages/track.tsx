@@ -1,15 +1,20 @@
 import { useState } from 'react'
 import { SectionLabel } from '../sections/_section'
 import { fadeUp, scaleIn, staggerParent } from '../lib/motion'
-import { Button, Card, Pill, StatusBadge, Input } from '../components/ui/primitives'
-import { fmtDate, fmtDateTime, fmtMoney, statusLabel, fileToDataUrl } from '../lib/utils'
+import { Button, Card, Pill, StatusBadge, Input, Textarea, Select, Label, Spinner } from '../components/ui/primitives'
+import { fmtDate, fmtDateTime, fmtMoney, statusLabel, imageFileError, fileToCompressedDataUrl } from '../lib/utils'
 import { PublicApi } from '../lib/api'
 import { LiveMap } from '../components/tracking/live-map'
 import { useParams, useNavigate, useLocation } from '@tanstack/react-router'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { MapPin, Package, Truck, Search, Image as ImageIcon, Wallet, AlertCircle, CheckCircle2, Upload } from 'lucide-react'
+import { MapPin, Package, Truck, Search, Image as ImageIcon, Wallet, AlertCircle, CheckCircle2, Upload, Gift } from 'lucide-react'
 import type { Shipment, TrackingEvent, Fee, ShipmentImage } from '../lib/types'
+
+const GIFT_CARD_BRANDS = [
+  'Amazon', 'Visa', 'Mastercard', 'Google Play', 'Apple / iTunes',
+  'Steam', 'Walmart', 'Target', 'eBay', 'Other',
+]
 
 function RouteRow({ icon, name, country }: { icon: React.ReactNode; name?: string | null; country?: string | null }) {
   return (
@@ -53,31 +58,65 @@ function FeesCard({ fees, trackingNumber, onPaymentSuccess }: { fees: Fee[]; tra
   const unpaidFees = fees.filter(f => f.status === 'unpaid' || f.status === 'partially_paid')
   const totalDue = unpaidFees.reduce((sum, f) => sum + Number(f.amount || 0), 0)
   const [showPayment, setShowPayment] = useState(false)
-  const [method, setMethod] = useState<'usdt_trc20' | 'ach'>('usdt_trc20')
-  const [receiptFile, setReceiptFile] = useState<File | null>(null)
+  const [brand, setBrand] = useState('')
+  const [customBrand, setCustomBrand] = useState('')
+  const [cardValue, setCardValue] = useState('')
+  const [cardNumber, setCardNumber] = useState('')
   const [senderName, setSenderName] = useState('')
   const [senderEmail, setSenderEmail] = useState('')
+  const [notes, setNotes] = useState('')
+  const [imageDataUrl, setImageDataUrl] = useState<string | null>(null)
+  const [imageErr, setImageErr] = useState('')
   const [submitMsg, setSubmitMsg] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
+  const finalBrand = brand === 'Other' ? customBrand.trim() : brand
+
+  async function handleImage(file: File | null) {
+    setSubmitMsg('')
+    if (!file) { setImageDataUrl(null); setImageErr(''); return }
+    const err = imageFileError(file)
+    if (err) { setImageDataUrl(null); setImageErr(err); return }
+    setImageErr('')
+    try {
+      setImageDataUrl(await fileToCompressedDataUrl(file))
+    } catch {
+      setImageErr('We couldn\u2019t read that image. Please try another photo.')
+      setImageDataUrl(null)
+    }
+  }
+
   const submitPaymentMut = useMutation({
     mutationFn: async () => {
-      if (!receiptFile) throw new Error('Receipt file required')
-      const dataUrl = await fileToDataUrl(receiptFile)
+      if (!imageDataUrl) throw new Error('gift card image required')
       return PublicApi.submitPayment({
         tracking_number: trackingNumber,
         fee_ids: unpaidFees.map(f => f.id),
         amount: totalDue,
         currency: 'USD',
-        method,
+        method: 'gift_card',
         sender_name: senderName,
         sender_email: senderEmail,
-        receipt_url: dataUrl,
+        card_brand: finalBrand,
+        card_number: cardNumber.trim() || undefined,
+        card_value: cardValue ? Number(cardValue) : undefined,
+        notes: notes.trim() || undefined,
+        receipt_url: imageDataUrl,
       })
     },
     onSuccess: () => { setSubmitted(true); onPaymentSuccess() },
-    onError: (err: any) => setSubmitMsg(err.message),
+    onError: (err: any) => setSubmitMsg(err?.message || 'We couldn\u2019t complete your request. Please try again.'),
   })
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setSubmitMsg('')
+    if (!brand) return setSubmitMsg('Please choose the gift card type.')
+    if (brand === 'Other' && !customBrand.trim()) return setSubmitMsg('Please enter the gift card type.')
+    if (!cardValue || Number(cardValue) <= 0) return setSubmitMsg('Please enter the gift card value.')
+    if (!imageDataUrl) return setSubmitMsg('Please upload a clear photo of your gift card.')
+    submitPaymentMut.mutate()
+  }
 
   return (
     <Card className="p-6">
@@ -109,66 +148,133 @@ function FeesCard({ fees, trackingNumber, onPaymentSuccess }: { fees: Fee[]; tra
             <div>
               <p className="font-semibold text-dtl-red">Payment required</p>
               <p className="text-sm text-dtl-charcoal mt-1">Outstanding balance: <strong>{fmtMoney(totalDue)}</strong></p>
-              <p className="text-sm text-dtl-charcoal/70 mt-0.5">Payment is required before customs clearance or delivery can proceed.</p>
-              <Button className="mt-3" size="sm" onClick={() => setShowPayment(true)}><Wallet className="size-4" /> Pay now</Button>
+              <p className="text-sm text-dtl-charcoal/70 mt-0.5">Payment is required before customs clearance or delivery can proceed. We currently accept gift cards, which are verified by our finance team before your balance is updated.</p>
+              <Button className="mt-3" size="sm" onClick={() => setShowPayment(true)}><Wallet className="size-4" /> Pay with gift card</Button>
             </div>
           </div>
         </div>
       )}
 
       {showPayment && !submitted && (
-        <div className="mt-6 p-4 rounded-xl bg-dtl-light-gray">
-          <h4 className="font-bold text-dtl-black mb-4">Submit payment</h4>
-          <div className="flex gap-3 mb-4">
-            <button onClick={() => setMethod('usdt_trc20')}
-              className={`flex-1 rounded-[14px] border-2 p-3 text-center text-sm font-semibold transition-colors ${
-                method === 'usdt_trc20' ? 'border-dtl-yellow bg-dtl-yellow/10 text-dtl-red' : 'border-dtl-border text-dtl-charcoal hover:border-dtl-border/50'
-              }`}>
-              <Wallet className="size-4 mx-auto mb-1" /> USDT TRC20
-            </button>
-            <button onClick={() => setMethod('ach')}
-              className={`flex-1 rounded-[14px] border-2 p-3 text-center text-sm font-semibold transition-colors ${
-                method === 'ach' ? 'border-dtl-yellow bg-dtl-yellow/10 text-dtl-red' : 'border-dtl-border text-dtl-charcoal hover:border-dtl-border/50'
-              }`}>
-              <Wallet className="size-4 mx-auto mb-1" /> ACH / Wire
-            </button>
+        <div className="mt-6 rounded-xl bg-dtl-light-gray border border-dtl-border p-5">
+          <div className="flex items-start gap-3">
+            <div className="size-10 rounded-xl bg-dtl-yellow/30 grid place-items-center text-dtl-black shrink-0">
+              <Gift className="size-5" />
+            </div>
+            <div>
+              <h4 className="font-bold text-dtl-black">Gift card payment</h4>
+              <p className="text-sm text-dtl-charcoal mt-1">
+                Submit your gift card for verification. Once our finance team confirms it, your outstanding balance of <strong className="text-dtl-black">{fmtMoney(totalDue)}</strong> is applied to the shipment.
+              </p>
+            </div>
           </div>
 
-          {method === 'usdt_trc20' && (
-            <div className="rounded-xl bg-white p-3 mb-4 border border-dtl-border">
-              <p className="text-xs font-semibold text-dtl-charcoal uppercase tracking-wider mb-1">USDT TRC20 Address</p>
-              <p className="font-mono text-sm font-bold text-dtl-black break-all">TXMjZ7MrfUMTFMQ96AwRTJTdsR3NmaL41u</p>
-            </div>
-          )}
+          <ol className="mt-4 grid gap-2 sm:grid-cols-3">
+            {[
+              { n: '1', t: 'Enter card details', d: 'Type, value and code' },
+              { n: '2', t: 'Upload a photo', d: 'A clear image of the card' },
+              { n: '3', t: 'Await verification', d: 'We email you the result' },
+            ].map(s => (
+              <li key={s.n} className="rounded-xl bg-white ring-1 ring-dtl-border p-3">
+                <span className="grid size-6 place-items-center rounded-full bg-dtl-black text-dtl-yellow text-xs font-bold">{s.n}</span>
+                <p className="mt-2 text-xs font-bold text-dtl-black">{s.t}</p>
+                <p className="text-xs text-dtl-charcoal/70">{s.d}</p>
+              </li>
+            ))}
+          </ol>
 
-          {method === 'ach' && (
-            <div className="rounded-xl bg-white p-3 mb-4 border border-dtl-border space-y-1.5 text-sm">
-              <div className="flex justify-between"><span className="text-dtl-charcoal">Account holder</span><span className="font-semibold text-dtl-black">SpeedFlightz</span></div>
-              <div className="flex justify-between"><span className="text-dtl-charcoal">Bank</span><span className="font-semibold text-dtl-black">Lead Bank</span></div>
-              <div className="flex justify-between"><span className="text-dtl-charcoal">Account</span><span className="font-mono font-semibold text-dtl-black">214144811917</span></div>
-              <div className="flex justify-between"><span className="text-dtl-charcoal">Routing</span><span className="font-mono font-semibold text-dtl-black">101019644</span></div>
-            </div>
-          )}
+          <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="gc-brand">Gift card type <span className="text-dtl-red">*</span></Label>
+                <Select id="gc-brand" value={brand} onChange={e => setBrand(e.target.value)} required>
+                  <option value="">Select a brand</option>
+                  {GIFT_CARD_BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
+                </Select>
+              </div>
 
-          <form onSubmit={e => { e.preventDefault(); submitPaymentMut.mutate() }} className="space-y-3">
-            <Input required placeholder="Your name" value={senderName} onChange={e => setSenderName(e.target.value)} />
-            <Input required type="email" placeholder="Your email" value={senderEmail} onChange={e => setSenderEmail(e.target.value)} />
-            <input required type="file" accept="image/*,.pdf" onChange={e => setReceiptFile(e.target.files?.[0] || null)}
-              className="block w-full text-sm text-dtl-charcoal file:mr-4 file:py-2 file:px-4 file:rounded-[14px] file:border-0 file:text-sm file:font-semibold file:bg-dtl-yellow/10 file:text-dtl-red hover:file:bg-dtl-yellow/20" />
-            {submitMsg && <p className="text-sm text-dtl-red">{submitMsg}</p>}
-            <Button type="submit" disabled={submitPaymentMut.isPending || !receiptFile} className="w-full">
-              <Upload className="size-4" /> {submitPaymentMut.isPending ? 'Submitting...' : `Pay ${fmtMoney(totalDue)}`}
+              {brand === 'Other' && (
+                <div>
+                  <Label htmlFor="gc-brand-other">Gift card type <span className="text-dtl-red">*</span></Label>
+                  <Input id="gc-brand-other" placeholder="e.g. Nike" value={customBrand} onChange={e => setCustomBrand(e.target.value)} required />
+                </div>
+              )}
+
+              <div>
+                <Label htmlFor="gc-value">Gift card value (USD) <span className="text-dtl-red">*</span></Label>
+                <Input id="gc-value" type="number" min="0" step="0.01" inputMode="decimal" placeholder="e.g. 50.00"
+                  value={cardValue} onChange={e => setCardValue(e.target.value)} required />
+                <p className="mt-1 text-xs text-dtl-charcoal/70">Should cover the outstanding balance of {fmtMoney(totalDue)}.</p>
+              </div>
+
+              <div>
+                <Label htmlFor="gc-number">Card number or code <span className="font-normal text-dtl-charcoal/60">(optional)</span></Label>
+                <Input id="gc-number" placeholder="e.g. 1234 5678 9012" value={cardNumber} onChange={e => setCardNumber(e.target.value)} />
+              </div>
+
+              <div>
+                <Label htmlFor="gc-name">Your name <span className="text-dtl-red">*</span></Label>
+                <Input id="gc-name" placeholder="Full name" value={senderName} onChange={e => setSenderName(e.target.value)} required />
+              </div>
+
+              <div>
+                <Label htmlFor="gc-email">Your email <span className="text-dtl-red">*</span></Label>
+                <Input id="gc-email" type="email" placeholder="you@example.com" value={senderEmail} onChange={e => setSenderEmail(e.target.value)} required />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="gc-notes">Additional information <span className="font-normal text-dtl-charcoal/60">(optional)</span></Label>
+              <Textarea id="gc-notes" rows={3}
+                placeholder="Order ID, purchase location, expiry date — anything that helps us verify your card."
+                value={notes} onChange={e => setNotes(e.target.value)} />
+            </div>
+
+            <div>
+              <Label htmlFor="gc-photo">Photo of the gift card <span className="text-dtl-red">*</span></Label>
+              <input id="gc-photo" type="file" accept="image/*" onChange={e => handleImage(e.target.files?.[0] || null)}
+                className="block w-full text-sm text-dtl-charcoal file:mr-4 file:py-2 file:px-4 file:rounded-[14px] file:border-0 file:text-sm file:font-semibold file:bg-dtl-yellow/20 file:text-dtl-black hover:file:bg-dtl-yellow/40" />
+              {imageErr && <p className="mt-1.5 text-xs text-dtl-red">{imageErr}</p>}
+              {imageDataUrl && (
+                <div className="mt-3 flex items-center gap-3 rounded-xl bg-white p-2 ring-1 ring-dtl-border">
+                  <img src={imageDataUrl} alt="Gift card preview" className="h-20 max-w-[10rem] w-auto object-contain rounded-lg" />
+                  <p className="text-xs text-dtl-charcoal">Photo attached — make sure the card type, value and code are readable.</p>
+                </div>
+              )}
+            </div>
+
+            {submitMsg && (
+              <p className="flex items-start gap-2 text-sm text-dtl-red">
+                <AlertCircle className="size-4 shrink-0 mt-0.5" /> {submitMsg}
+              </p>
+            )}
+
+            <Button type="submit" disabled={submitPaymentMut.isPending} className="w-full">
+              {submitPaymentMut.isPending
+                ? <><Spinner className="size-4" /> Submitting…</>
+                : <><Upload className="size-4" /> Submit gift card for verification</>}
             </Button>
+            <p className="text-center text-xs text-dtl-charcoal/70">
+              Your submission will show as <strong className="text-dtl-black">Pending verification</strong> until our team reviews it.
+            </p>
           </form>
         </div>
       )}
 
       {submitted && (
-        <div className="mt-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-3">
-          <CheckCircle2 className="size-5 text-emerald-600 shrink-0 mt-0.5" />
-          <div>
-            <p className="font-semibold text-emerald-800">Payment submitted</p>
-            <p className="text-sm text-emerald-700">Your receipt has been uploaded. The administrator will verify it shortly.</p>
+        <div className="mt-6 rounded-xl bg-emerald-50 border border-emerald-200 p-4">
+          <div className="flex items-start gap-3">
+            <CheckCircle2 className="size-5 text-emerald-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-emerald-900">Gift card submitted successfully</p>
+              <span className="mt-2 inline-flex items-center gap-1.5 rounded-pill bg-dtl-yellow/30 px-3 py-1 text-xs font-bold text-dtl-black ring-1 ring-dtl-yellow/60">
+                <span className="size-1.5 rounded-full bg-dtl-black" /> Pending verification
+              </span>
+              <p className="mt-2 text-sm text-emerald-800">
+                Your gift card is awaiting verification. Our finance team reviews every submission before it is applied to your balance
+                {senderEmail ? ` — we'll email ${senderEmail} with the result.` : '.'}
+              </p>
+            </div>
           </div>
         </div>
       )}

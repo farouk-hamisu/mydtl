@@ -8,7 +8,7 @@ import {
   LayoutDashboard, Package, Wallet, FileText, Image as ImageIcon, Settings, LogOut, Plus, Trash2, ChevronRight,
   MapPin, Calendar, Truck, AlertCircle, CheckCircle2, Clock, X, Edit3, Save, Search, Upload, ExternalLink, Globe,
 } from 'lucide-react'
-import { fmtDate, fmtDateTime, fmtMoney, statusLabel, initials, fileToDataUrl } from '../../lib/utils'
+import { fmtDate, fmtDateTime, fmtMoney, statusLabel, initials, fileToDataUrl, paymentStatusLabel, paymentMethodLabel } from '../../lib/utils'
 import { LiveMap } from '../../components/tracking/live-map'
 import type { Shipment, TrackingEvent, Fee, ShipmentImage, Profile, Payment, Service, Testimonial, GalleryItem, BrandPartner, SiteSettings } from '../../lib/types'
 
@@ -695,12 +695,12 @@ export function AdminPayments() {
                 <tr key={p.id} className="hover:bg-dtl-light-gray/50 transition-colors">
                   <td className="p-4 font-semibold text-dtl-black">#{(p as any).shipments?.tracking_number || '—'}</td>
                   <td className="p-4 font-semibold text-dtl-black">{fmtMoney(p.amount, p.currency)}</td>
-                  <td className="p-4 text-dtl-charcoal uppercase">{p.method}</td>
-                  <td className="p-4"><StatusBadge status={p.status} /></td>
+                  <td className="p-4 text-dtl-charcoal">{paymentMethodLabel(p.method)}</td>
+                  <td className="p-4"><StatusBadge status={p.status} label={paymentStatusLabel(p.status)} /></td>
                   <td className="p-4">
                     {p.receipt_url ? (
                       <a href={p.receipt_url} target="_blank" rel="noopener noreferrer" className="text-dtl-red hover:text-dtl-red/80 inline-flex items-center gap-1">
-                        <ExternalLink className="size-3.5" /> View
+                        <ExternalLink className="size-3.5" /> {p.receipt_url.startsWith('data:') ? 'Photo' : 'View'}
                       </a>
                     ) : '—'}
                   </td>
@@ -723,13 +723,34 @@ export function AdminPayments() {
           <h3 className="text-lg font-bold text-dtl-black mb-4">Review payment</h3>
           <div className="space-y-3 mb-6">
             <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Amount</span><span className="font-semibold">{fmtMoney(selectedPayment.amount, selectedPayment.currency)}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Method</span><span className="font-semibold uppercase">{selectedPayment.method}</span></div>
-            {selectedPayment.receipt_url && (
-              <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Receipt</span>
-                <a href={selectedPayment.receipt_url} target="_blank" rel="noopener noreferrer" className="text-dtl-red hover:text-dtl-red/80 inline-flex items-center gap-1"><ExternalLink className="size-3.5" /> View receipt</a>
+            <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Method</span><span className="font-semibold">{paymentMethodLabel(selectedPayment.method)}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Status</span><StatusBadge status={selectedPayment.status} label={paymentStatusLabel(selectedPayment.status)} /></div>
+            {selectedPayment.method === 'gift_card' && (
+              <>
+                <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Gift card type</span><span className="font-semibold">{selectedPayment.card_brand || '—'}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Card value</span><span className="font-semibold">{selectedPayment.card_value != null ? fmtMoney(selectedPayment.card_value) : '—'}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Card number</span><span className="font-mono font-semibold break-all">{selectedPayment.card_number || '—'}</span></div>
+              </>
+            )}
+            {(selectedPayment.sender_name || selectedPayment.sender_email) && (
+              <div className="flex justify-between gap-4 text-sm">
+                <span className="text-dtl-charcoal shrink-0">Submitted by</span>
+                <span className="font-semibold text-right">{selectedPayment.sender_name || ''}{selectedPayment.sender_name && selectedPayment.sender_email ? ' · ' : ''}{selectedPayment.sender_email || ''}</span>
               </div>
             )}
-            {selectedPayment.notes && <div className="flex justify-between text-sm"><span className="text-dtl-charcoal">Notes</span><span>{selectedPayment.notes}</span></div>}
+            {selectedPayment.receipt_url && (
+              <div className="text-sm">
+                <p className="text-dtl-charcoal mb-2">{selectedPayment.method === 'gift_card' ? 'Gift card photo' : 'Receipt'}</p>
+                {selectedPayment.receipt_url.startsWith('data:') ? (
+                  <a href={selectedPayment.receipt_url} target="_blank" rel="noopener noreferrer" className="inline-block">
+                    <img src={selectedPayment.receipt_url} alt="Gift card" className="max-h-56 w-auto max-w-full rounded-xl ring-1 ring-dtl-border object-contain" />
+                  </a>
+                ) : (
+                  <a href={selectedPayment.receipt_url} target="_blank" rel="noopener noreferrer" className="text-dtl-red hover:text-dtl-red/80 inline-flex items-center gap-1"><ExternalLink className="size-3.5" /> View receipt</a>
+                )}
+              </div>
+            )}
+            {selectedPayment.notes && <div className="flex justify-between gap-4 text-sm"><span className="text-dtl-charcoal shrink-0">Notes</span><span className="text-right">{selectedPayment.notes}</span></div>}
           </div>
           <div className="flex gap-3">
             <Button onClick={() => verifyMut.mutate({ id: selectedPayment.id, status: 'verified' })} disabled={verifyMut.isPending}>

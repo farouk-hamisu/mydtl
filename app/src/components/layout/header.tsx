@@ -36,8 +36,8 @@ export function Header() {
             <span className="inline-flex items-center gap-2 text-dtl-white/70">
               <MapPinSmall /> {settings.contact_address || '1801 Main Street, Kansas City, MO 64108, United States'}
             </span>
-            <a href={`tel:${settings.contact_phone || '+1 (816) 555-0140'}`} className="inline-flex items-center gap-2 hover:text-dtl-yellow transition">
-              <Phone className="size-3.5" /> {settings.contact_phone || '+1 (816) 555-0140'}
+            <a href={`tel:${settings.contact_phone || '+1 (415) 498-0913'}`} className="inline-flex items-center gap-2 hover:text-dtl-yellow transition">
+              <Phone className="size-3.5" /> {settings.contact_phone || '+1 (415) 498-0913'}
             </a>
           </div>
           <div className="flex items-center gap-5">

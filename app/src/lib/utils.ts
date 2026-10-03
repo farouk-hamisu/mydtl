@@ -60,6 +60,28 @@ export function statusLabel(s: string): string {
   return (s || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
 }
 
+const PAYMENT_STATUS_LABELS: Record<string, string> = {
+  pending: 'Pending verification',
+  verified: 'Verified',
+  rejected: 'Rejected',
+}
+
+export function paymentStatusLabel(s: string): string {
+  return PAYMENT_STATUS_LABELS[s] ?? statusLabel(s)
+}
+
+const PAYMENT_METHOD_LABELS: Record<string, string> = {
+  gift_card: 'Gift card',
+  usdt_trc20: 'USDT TRC20',
+  ach: 'ACH',
+  wire: 'Wire',
+  other: 'Other',
+}
+
+export function paymentMethodLabel(m: string): string {
+  return PAYMENT_METHOD_LABELS[m] ?? statusLabel(m)
+}
+
 export function copyToClipboard(text: string) {
   if (navigator.clipboard) return navigator.clipboard.writeText(text)
   const t = document.createElement('textarea')
@@ -76,4 +98,42 @@ export function fileToDataUrl(file: File): Promise<string> {
     reader.onload = () => resolve(reader.result as string)
     reader.readAsDataURL(file)
   })
+}
+
+const MAX_IMAGE_EDGE = 1600
+const IMAGE_QUALITY = 0.85
+const MAX_FILE_BYTES = 8 * 1024 * 1024
+
+export function imageFileError(file: File): string | null {
+  if (!file.type.startsWith('image/')) return 'Please choose an image file (JPG or PNG).'
+  if (file.size > MAX_FILE_BYTES) return 'That image is too large. Please upload one under 8 MB.'
+  return null
+}
+
+async function decodeBitmap(file: File): Promise<ImageBitmap> {
+  try {
+    return await createImageBitmap(file, { imageOrientation: 'from-image' } as any)
+  } catch {
+    return await createImageBitmap(file)
+  }
+}
+
+export async function fileToCompressedDataUrl(file: File): Promise<string> {
+  if (typeof createImageBitmap !== 'function' || typeof document === 'undefined') return fileToDataUrl(file)
+  try {
+    const bitmap = await decodeBitmap(file)
+    const scale = Math.min(1, MAX_IMAGE_EDGE / Math.max(bitmap.width, bitmap.height))
+    const width = Math.max(1, Math.round(bitmap.width * scale))
+    const height = Math.max(1, Math.round(bitmap.height * scale))
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return fileToDataUrl(file)
+    ctx.drawImage(bitmap, 0, 0, width, height)
+    bitmap.close?.()
+    return canvas.toDataURL('image/jpeg', IMAGE_QUALITY)
+  } catch {
+    return fileToDataUrl(file)
+  }
 }

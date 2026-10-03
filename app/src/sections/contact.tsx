@@ -43,7 +43,7 @@ export function Contact() {
 
             <ul className="mt-8 space-y-4">
               <ContactRow icon={<MapPin className="size-5" />} label="Visit" value={settings.contact_address || '1801 Main Street, Kansas City, MO 64108, United States'} />
-              <ContactRow icon={<Phone className="size-5" />} label="Call" value={settings.contact_phone || '+1 (816) 555-0140'} href={`tel:${settings.contact_phone}`} />
+              <ContactRow icon={<Phone className="size-5" />} label="Call" value={settings.contact_phone || '+1 (415) 498-0913'} href={`tel:${settings.contact_phone}`} />
               <ContactRow icon={<Mail className="size-5" />} label="Email" value={settings.contact_email || 'support@dtl.com'} href={`mailto:${settings.contact_email}`} />
             </ul>
 

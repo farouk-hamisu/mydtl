@@ -49,7 +49,7 @@ export function About() {
             {/* Contact card */}
             <motion.div variants={fadeUp} className="mt-8 rounded-card bg-dtl-charcoal text-white p-6 max-w-md">
               <p className="text-xs uppercase tracking-[0.18em] text-dtl-yellow font-bold">24/7 dispatch desk</p>
-              <p className="mt-2 text-lg font-semibold">+1 (816) 555-0140</p>
+              <p className="mt-2 text-lg font-semibold">+1 (415) 498-0913</p>
               <p className="text-sm text-white/80">dispatch@dtl.com</p>
             </motion.div>
           </motion.div>

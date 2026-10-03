@@ -43,12 +43,32 @@ router.get('/track/:trackingNumber', async (req, res, next) => {
   } catch (e) { next(e) }
 })
 
+const PAYMENT_METHODS = ['usdt_trc20', 'ach', 'wire', 'other', 'gift_card']
+const FRIENDLY_ERROR = 'We couldn\u2019t complete your request. Please try again.'
+
 router.post('/payment', async (req, res, next) => {
   try {
-    const { tracking_number, fee_ids, amount, currency, method, sender_name, sender_email, receipt_url } = req.body || {}
-    if (!tracking_number || !fee_ids?.length) return res.status(400).json({ error: 'tracking_number and fee_ids required' })
+    const {
+      tracking_number, fee_ids, amount, currency, method, sender_name, sender_email,
+      receipt_url, card_brand, card_number, card_value, notes,
+    } = req.body || {}
 
-    const { data: ship } = await supabaseAdmin.from('shipments').select('id').eq('tracking_number', tracking_number.toUpperCase()).single()
+    if (!tracking_number || !fee_ids?.length) {
+      return res.status(400).json({ error: 'tracking_number and fee_ids required' })
+    }
+
+    const payMethod = method || 'gift_card'
+    if (!PAYMENT_METHODS.includes(payMethod)) {
+      return res.status(400).json({ error: 'unsupported payment method' })
+    }
+
+    if (payMethod === 'gift_card') {
+      if (!card_brand) return res.status(400).json({ error: 'gift card type is required' })
+      if (!receipt_url) return res.status(400).json({ error: 'gift card image is required' })
+    }
+
+    const { data: ship } = await supabaseAdmin.from('shipments')
+      .select('id').eq('tracking_number', tracking_number.toUpperCase()).single()
     if (!ship) return res.status(404).json({ error: 'shipment not found' })
 
     const { data, error } = await supabaseAdmin.from('payments').insert({
@@ -56,11 +76,20 @@ router.post('/payment', async (req, res, next) => {
       fee_id: fee_ids[0],
       amount: Number(amount) || 0,
       currency: currency ?? 'USD',
-      method: method ?? 'usdt_trc20',
+      method: payMethod,
+      sender_name: sender_name ?? null,
+      sender_email: sender_email ?? null,
       receipt_url: receipt_url ?? null,
+      card_brand: card_brand ?? null,
+      card_number: card_number ?? null,
+      card_value: card_value === '' || card_value == null ? null : Number(card_value),
+      notes: notes ?? null,
       status: 'pending',
     }).select().single()
-    if (error) throw error
+    if (error) {
+      console.error('[payment] insert failed:', error.code, error.message)
+      return res.status(500).json({ error: FRIENDLY_ERROR })
+    }
     res.json({ payment: data })
   } catch (e) { next(e) }
 })

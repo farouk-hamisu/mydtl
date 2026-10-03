@@ -46,7 +46,7 @@ export function Footer() {
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-dtl-red">Get in touch</p>
             <ul className="mt-4 space-y-3 text-sm text-dtl-white/80">
               <li className="flex items-start gap-3 break-words"><MapPin className="size-4 mt-0.5 text-dtl-red shrink-0" /> <span>{settings.contact_address || '1801 Main Street, Kansas City, MO 64108, United States'}</span></li>
-              <li className="flex items-center gap-3"><Phone className="size-4 text-dtl-red shrink-0" /> <a href={`tel:${settings.contact_phone || '+1 (816) 555-0140'}`} className="hover:text-white whitespace-nowrap">{settings.contact_phone || '+1 (816) 555-0140'}</a></li>
+              <li className="flex items-center gap-3"><Phone className="size-4 text-dtl-red shrink-0" /> <a href={`tel:${settings.contact_phone || '+1 (415) 498-0913'}`} className="hover:text-white whitespace-nowrap">{settings.contact_phone || '+1 (415) 498-0913'}</a></li>
               <li className="flex items-start gap-3 break-words"><Mail className="size-4 mt-0.5 text-dtl-red shrink-0" /> <a href={`mailto:${settings.contact_email || 'support@dtl.com'}`} className="hover:text-white">{settings.contact_email || 'support@dtl.com'}</a></li>
             </ul>
             <form className="mt-6 flex gap-2" onSubmit={(e) => { e.preventDefault() }}>

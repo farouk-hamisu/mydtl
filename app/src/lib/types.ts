@@ -86,7 +86,7 @@ export type Fee = {
   updated_at: string
 }
 
-export type PayMethod = 'usdt_trc20' | 'ach' | 'wire' | 'other'
+export type PayMethod = 'usdt_trc20' | 'ach' | 'wire' | 'other' | 'gift_card'
 export type PayStatus = 'pending' | 'verified' | 'rejected'
 export type Payment = {
   id: string
@@ -99,6 +99,11 @@ export type Payment = {
   reference?: string | null
   notes?: string | null
   receipt_url?: string | null
+  sender_name?: string | null
+  sender_email?: string | null
+  card_brand?: string | null
+  card_number?: string | null
+  card_value?: number | null
   status: PayStatus
   verified_by?: string | null
   verified_at?: string | null

@@ -6,7 +6,7 @@ import { SectionLabel } from './_section'
 const reasons = [
   { icon: MapPinned, t: 'Pin-point live tracking', d: 'Live coordinates, ETA updates, and contextual checkpoints that match what your customer service team sees.' },
   { icon: ShieldCheck, t: 'Customs handled end-to-end', d: 'Bonded warehousing, brokers, and digital duty management built directly into your shipment flow.' },
-  { icon: Wallet, t: 'Pay duties online', d: 'USDT (TRC20) and ACH accepted, with receipt upload and verified workflows for finance teams.' },
+  { icon: Wallet, t: 'Pay duties online', d: 'Gift card payments with photo upload, live verification status, and reviewed workflows for finance teams.' },
   { icon: BarChart3, t: 'Operational analytics', d: 'Shipment KPIs, customs time, and discount routes surfaced in one customer dashboard.' },
   { icon: Headset, t: '24/7 dispatch desk', d: 'A real human, a direct line. Anything between booking and delivery can be re-routed at any hour.' },
   { icon: Globe2, t: 'Goods everywhere', d: 'A network covering 190+ countries with the same SDK-grade tracking across air, sea, and road.' },

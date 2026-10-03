@@ -13,14 +13,14 @@ export function Pill({ children, className }: { children: React.ReactNode; class
   )
 }
 
-export function StatusBadge({ status }: { status: string }) {
+export function StatusBadge({ status, label }: { status: string; label?: string }) {
   return (
     <span className={cn(
       'inline-flex items-center gap-1.5 rounded-pill px-3 py-1 text-xs font-semibold ring-1',
       statusColor(status),
     )}>
       <span className="size-1.5 rounded-full bg-current opacity-80" />
-      {statusLabel(status)}
+      {label ?? statusLabel(status)}
     </span>
   )
 }

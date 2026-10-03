@@ -6,10 +6,10 @@ import { SectionLabel } from './_section'
 
 const faqs = [
   { q: 'How do I track my shipment?', a: 'Use any tracking number from your confirmation email in the Track page. Each shipment shows a live map, timeline, photos, and customs status. You can also log in to your dashboard to see all your shipments together.' },
-  { q: 'Can I pay customs duty online?', a: 'Yes. When a customs or shipment fee is applied, you will be notified and a payment notice will appear on the shipment detail page. We accept USDT (TRC20) and ACH / Domestic wire transfers.' },
+  { q: 'Can I pay customs duty online?', a: 'Yes. When a customs or shipment fee is applied, you will be notified and a payment notice will appear on the shipment detail page. We currently accept gift cards — submit your card details and a clear photo and our finance team verifies it before your balance is updated.' },
   { q: 'How long does customs clearance take?', a: 'For routine shipments, customs clearance at major ports averages 6 hours after duties are settled. For inspections or holds, your dispatch desk will keep you posted every step of the way.' },
   { q: 'Can I track a shipment without an account?', a: 'Absolutely. Anyone with a valid tracking number can use the public Track page. Accounts are only needed to manage multiple shipments, receive notifications, or upload payment proof.' },
-  { q: 'What payment methods are supported?', a: 'We currently support USDT (TRC20) and ACH / domestic wire. After payment, simply upload your receipt or transaction reference within the customer dashboard.' },
+  { q: 'What payment methods are supported?', a: 'We currently accept gift card payments. On the shipment page, choose Pay with gift card, enter the card type, value and code, upload a clear photo of the card, and submit — it shows as "Pending verification" until our team reviews it.' },
   { q: 'What happens if my shipment is on hold?', a: 'If your shipment is placed under "Customs Hold" or "Awaiting Payment", it remains fully trackable. You will see a clear reason and a payment notice if any outstanding fees are required to release it.' },
 ]
 
