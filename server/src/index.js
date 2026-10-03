@@ -9,8 +9,32 @@ import publicRouter from './routes/public.js'
 import uploadsRouter from './routes/uploads.js'
 
 const app = express()
+
+const envOrigins = (process.env.CLIENT_ORIGIN || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+
+const allowedOrigins = new Set([
+  'https://speedflightz.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'http://127.0.0.1:5173',
+  ...envOrigins,
+])
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true
+  if (allowedOrigins.has(origin)) return true
+  // local dev: Vite auto-increments the port when 5173 is taken
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true
+  // Vercel preview deployments of this project
+  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) return true
+  return false
+}
+
 app.use(cors({
-  origin: ['https://speedflightz.vercel.app', 'http://localhost:5173'],
+  origin: isAllowedOrigin,
   credentials: true,
 }))
 app.use(express.json({ limit: '12mb' }))
