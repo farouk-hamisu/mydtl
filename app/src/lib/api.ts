@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const base = 'https://speedflightz.onrender.com/api'
+const base = 'https://speedflightz-w2ip.onrender.com/api'
 
 type FetchInit = RequestInit & { auth?: boolean; raw?: boolean }
 
