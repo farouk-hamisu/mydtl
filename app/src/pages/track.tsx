@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { SectionLabel } from '../sections/_section'
 import { fadeUp, scaleIn, staggerParent } from '../lib/motion'
 import { Button, Card, Pill, StatusBadge, Input, Textarea, Select, Label, Spinner } from '../components/ui/primitives'
-import { fmtDate, fmtDateTime, fmtMoney, statusLabel, imageFileError, fileToCompressedDataUrl } from '../lib/utils'
+import { fmtDate, fmtDateTime, fmtMoney, statusLabel, paymentStatusLabel, paymentMethodLabel, imageFileError, fileToCompressedDataUrl } from '../lib/utils'
 import { PublicApi } from '../lib/api'
 import { LiveMap } from '../components/tracking/live-map'
 import { useParams, useNavigate, useLocation } from '@tanstack/react-router'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { MapPin, Package, Truck, Search, Image as ImageIcon, Wallet, AlertCircle, CheckCircle2, Upload, Gift } from 'lucide-react'
-import type { Shipment, TrackingEvent, Fee, ShipmentImage } from '../lib/types'
+import type { Shipment, TrackingEvent, Fee, ShipmentImage, PublicPayment } from '../lib/types'
 
 const GIFT_CARD_BRANDS = [
   'Amazon', 'Visa', 'Mastercard', 'Google Play', 'Apple / iTunes',
@@ -54,9 +54,10 @@ function Timeline({ events }: { events: TrackingEvent[] }) {
   )
 }
 
-function FeesCard({ fees, trackingNumber, onPaymentSuccess }: { fees: Fee[]; trackingNumber: string; onPaymentSuccess: () => void }) {
+function FeesCard({ fees, payments = [], trackingNumber, onPaymentSuccess }: { fees: Fee[]; payments?: PublicPayment[]; trackingNumber: string; onPaymentSuccess: () => void }) {
   const unpaidFees = fees.filter(f => f.status === 'unpaid' || f.status === 'partially_paid')
   const totalDue = unpaidFees.reduce((sum, f) => sum + Number(f.amount || 0), 0)
+  const hasPendingSubmission = payments.some(p => p.status === 'pending')
   const [showPayment, setShowPayment] = useState(false)
   const [brand, setBrand] = useState('')
   const [customBrand, setCustomBrand] = useState('')
@@ -141,7 +142,27 @@ function FeesCard({ fees, trackingNumber, onPaymentSuccess }: { fees: Fee[]; tra
         </div>
       )}
 
-      {unpaidFees.length > 0 && !showPayment && !submitted && (
+      {payments.length > 0 && (
+        <div className="mt-6">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-dtl-charcoal mb-2">Gift card submissions</p>
+          <div className="space-y-2">
+            {payments.map(p => (
+              <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white ring-1 ring-dtl-border p-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-dtl-black">
+                    {p.card_brand || paymentMethodLabel(p.method)}
+                    {p.card_value != null && <span className="text-dtl-charcoal font-normal"> · {fmtMoney(p.card_value, p.currency)}</span>}
+                  </p>
+                  <p className="text-xs text-dtl-charcoal/70">Submitted {fmtDate(p.created_at)}</p>
+                </div>
+                <StatusBadge status={p.status} label={paymentStatusLabel(p.status)} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {unpaidFees.length > 0 && !showPayment && !submitted && !hasPendingSubmission && (
         <div className="mt-6 p-4 rounded-xl bg-dtl-yellow/10 border border-dtl-yellow/30">
           <div className="flex items-start gap-3">
             <AlertCircle className="size-5 text-dtl-red shrink-0 mt-0.5" />
@@ -151,6 +172,17 @@ function FeesCard({ fees, trackingNumber, onPaymentSuccess }: { fees: Fee[]; tra
               <p className="text-sm text-dtl-charcoal/70 mt-0.5">Payment is required before customs clearance or delivery can proceed. We currently accept gift cards, which are verified by our finance team before your balance is updated.</p>
               <Button className="mt-3" size="sm" onClick={() => setShowPayment(true)}><Wallet className="size-4" /> Pay with gift card</Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {unpaidFees.length > 0 && !showPayment && !submitted && hasPendingSubmission && (
+        <div className="mt-6 p-4 rounded-xl bg-dtl-yellow/10 border border-dtl-yellow/30 flex items-start gap-3">
+          <AlertCircle className="size-5 text-dtl-red shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold text-dtl-red">Awaiting verification</p>
+            <p className="text-sm text-dtl-charcoal mt-1">Your gift card submission is pending verification. Outstanding balance: <strong>{fmtMoney(totalDue)}</strong>.</p>
+            <p className="text-sm text-dtl-charcoal/70 mt-0.5">{'We\u2019ll review it shortly \u2014 no further action is needed right now.'}</p>
           </div>
         </div>
       )}
@@ -301,6 +333,7 @@ export function TrackPage() {
   const events: TrackingEvent[] = data?.events ?? []
   const fees: Fee[] = data?.fees ?? []
   const images: ShipmentImage[] = data?.images ?? []
+  const payments: PublicPayment[] = data?.payments ?? []
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -402,7 +435,7 @@ export function TrackPage() {
                 )}
               </div>
               <div className="space-y-6">
-                <FeesCard fees={fees} trackingNumber={shipment.tracking_number} onPaymentSuccess={() => refetch()} />
+                <FeesCard fees={fees} payments={payments} trackingNumber={shipment.tracking_number} onPaymentSuccess={() => refetch()} />
               </div>
             </motion.div>
 

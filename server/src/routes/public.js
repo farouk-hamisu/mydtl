@@ -24,21 +24,26 @@ router.get('/track/:trackingNumber', async (req, res, next) => {
     const shipment = directResult
     const shipmentId = shipment.id
 
-    const [eventsRes, imagesRes, feesRes] = await Promise.all([
+    const [eventsRes, imagesRes, feesRes, paymentsRes] = await Promise.all([
       supabaseAdmin.from('tracking_events').select('*').eq('shipment_id', shipmentId).order('occurred_at', { ascending: false }),
       supabaseAdmin.from('shipment_images').select('*').eq('shipment_id', shipmentId).order('created_at'),
       supabaseAdmin.from('shipment_fees').select('*').eq('shipment_id', shipmentId).order('created_at'),
+      supabaseAdmin.from('payments').select('id, method, status, amount, currency, card_brand, card_value, created_at')
+        .eq('shipment_id', shipmentId).order('created_at', { ascending: false }),
     ])
     if (eventsRes.error) throw eventsRes.error
     if (imagesRes.error) throw imagesRes.error
     if (feesRes.error) throw feesRes.error
-    console.log('[track] events:', eventsRes.data?.length ?? 0, 'images:', imagesRes.data?.length ?? 0, 'fees:', feesRes.data?.length ?? 0)
+    if (paymentsRes.error) throw paymentsRes.error
+    console.log('[track] events:', eventsRes.data?.length ?? 0, 'images:', imagesRes.data?.length ?? 0,
+      'fees:', feesRes.data?.length ?? 0, 'payments:', paymentsRes.data?.length ?? 0)
 
     res.json({
       shipment,
       events: eventsRes.data,
       images: imagesRes.data,
       fees: feesRes.data,
+      payments: paymentsRes.data,
     })
   } catch (e) { next(e) }
 })

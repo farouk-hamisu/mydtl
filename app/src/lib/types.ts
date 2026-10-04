@@ -111,6 +111,17 @@ export type Payment = {
   updated_at: string
 }
 
+export type PublicPayment = {
+  id: string
+  method: PayMethod
+  status: PayStatus
+  amount: number
+  currency: string
+  card_brand?: string | null
+  card_value?: number | null
+  created_at: string
+}
+
 export type ShipmentImage = {
   id: string
   shipment_id: string
