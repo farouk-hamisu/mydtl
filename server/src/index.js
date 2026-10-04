@@ -17,6 +17,8 @@ const envOrigins = (process.env.CLIENT_ORIGIN || '')
 
 const allowedOrigins = new Set([
   'https://speedflightz.vercel.app',
+  'https://diamondthrivelogistics.com',
+  'https://www.diamondthrivelogistics.com',
   'http://localhost:5173',
   'http://localhost:4173',
   'http://127.0.0.1:5173',
@@ -30,6 +32,8 @@ function isAllowedOrigin(origin) {
   if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true
   // Vercel preview deployments of this project
   if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) return true
+  // production domain, with or without a subdomain (www, staging, ...)
+  if (/^https:\/\/([a-z0-9-]+\.)*diamondthrivelogistics\.com$/.test(origin)) return true
   return false
 }
 
