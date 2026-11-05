@@ -16,8 +16,8 @@ const envOrigins = (process.env.CLIENT_ORIGIN || '')
   .filter(Boolean)
 
 const allowedOrigins = new Set([
-  'https://diamondthrivelogistics.com',
-  'https://www.diamondthrivelogistics.com',
+  'https://diamondthrivelogisticss.vercel.app',
+  'https://www.diamondthrivelogisticss.vercel.app',
   'http://localhost:5173',
   'http://localhost:4173',
   'http://127.0.0.1:5173',
@@ -46,9 +46,9 @@ app.use(cors({
   origin: originCallback,
   credentials: true,
 }))
-app.use(express.json({ limit: '12mb' }))
+app.use(express.json({limit: '12mb'}))
 
-app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }))
+app.get('/api/health', (_req, res) => res.json({ok: true, ts: Date.now()}))
 
 app.use('/api/auth', authRouter)
 app.use('/api/public', publicRouter)
@@ -59,7 +59,7 @@ app.use('/api/uploads', uploadsRouter)
 
 app.use((err, _req, res, _next) => {
   console.error('[api:error]', err.message)
-  res.status(err.status ?? 500).json({ error: err.message ?? 'server error' })
+  res.status(err.status ?? 500).json({error: err.message ?? 'server error'})
 })
 
 const port = Number(process.env.PORT || 8787)
