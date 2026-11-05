@@ -1,4 +1,4 @@
-# SpeedFlightz — Premium International Shipping & Logistics Platform
+# DiamondThriveLogistics — Premium International Shipping & Logistics Platform
 
 A premium logistics platform with real-time shipment tracking, live interactive maps, customs duty management, and a full admin dashboard.
 
@@ -46,11 +46,16 @@ Edit `.env` with your Supabase credentials:
 ```env
 VITE_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
+# Frontend API base. Defaults to /api (proxied locally by Vite).
+VITE_API_BASE_URL=/api
 
 SUPABASE_URL=https://YOUR-PROJECT.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 SUPABASE_ANON_KEY=your-anon-key
 ```
+
+In production, set `VITE_API_BASE_URL` to the public URL of the Express API
+(for example `https://api.example.com/api`) so the frontend knows where to send requests.
 
 ### 4. Install & run
 
@@ -101,14 +106,14 @@ npm run dev:api   # Backend on :8787
 
 ### Payment
 - **USDT (TRC20):** `TXMjZ7MrfUMTFMQ96AwRTJTdsR3NmaL41u`
-- **ACH / Wire:** SpeedFlightz, Lead Bank, Account 214144811917, Routing 101019644
+- **ACH / Wire:** DiamondThriveLogistics, Lead Bank, Account 214144811917, Routing 101019644
 - Upload receipt with transaction reference
 - Admin verification workflow
 
 ## Project Structure
 
 ```
-speedflightz/
+diamondthrivelogistics/
 ├── app/                    # React frontend
 │   └── src/
 │       ├── components/     # Reusable UI components
@@ -124,4 +129,4 @@ speedflightz/
 └── supabase/
     └── migrations/         # SQL migrations
 ```
-# speedflightz
+# diamondthrivelogistics

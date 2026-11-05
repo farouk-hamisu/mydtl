@@ -12,18 +12,18 @@ type Ctx = {
   loading: boolean
 }
 const defaultSettings = {
-  id: 1, site_name: 'SpeedFlightz',
+  id: 1, site_name: 'DiamondThriveLogistics',
   tagline: 'Premium International Shipping & Logistics',
   hero_headline: 'Cargo Without Borders. Delivered on Time, Every Time.',
   hero_subheadline: 'Air, sea, and road freight with end-to-end visibility, live tracking, and dedicated customs handling across 190+ countries.',
   hero_bullets: 'Real-time tracking|Live interactive map|Customs clearance handled|Door-to-door delivery',
-  contact_email: 'support@speedflightz.com',
+  contact_email: 'support@diamondthrivelogistics.com',
   contact_phone: '+1 (415) 498-0913',
   contact_address: '1801 Main Street, Kansas City, MO 64108, United States',
   business_hours: 'Mon – Fri: 08:00 – 18:00',
   social_facebook: '', social_twitter: '', social_linkedin: '', social_instagram: '', social_youtube: '',
   usdt_trc20_address: 'TXMjZ7MrfUMTFMQ96AwRTJTdsR3NmaL41u',
-  ach_account_holder: 'SpeedFlightz',
+  ach_account_holder: 'DiamondThriveLogistics',
   ach_bank: 'Lead Bank',
   ach_account_number: '214144811917',
   ach_routing_number: '101019644',

@@ -46,7 +46,7 @@ router.post('/', authUser, requireAdmin, async (req, res, next) => {
       'current_lat','current_lng','current_location_label',
       'weight_kg','pieces','dimensions','status','estimated_delivery','actual_delivery','notes',
     ])
-    if (!payload.tracking_number) payload.tracking_number = 'SFZ-' + Math.random().toString(36).slice(2, 8).toUpperCase()
+    if (!payload.tracking_number) payload.tracking_number = 'DTL-' + Math.random().toString(36).slice(2, 8).toUpperCase()
     if (payload.current_lat == null && payload.origin_lat != null) { payload.current_lat = payload.origin_lat; payload.current_lng = payload.origin_lng }
     if (!payload.current_location_label && payload.origin_name) payload.current_location_label = payload.origin_name
 

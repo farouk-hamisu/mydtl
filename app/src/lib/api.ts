@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const base = 'https://speedflightz-w2ip.onrender.com/api'
+const base = ((import.meta.env.VITE_API_BASE_URL as string | undefined) || '/api').replace(/\/$/, '')
 
 type FetchInit = RequestInit & { auth?: boolean; raw?: boolean }
 

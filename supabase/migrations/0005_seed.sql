@@ -4,12 +4,12 @@
 
 -- Default settings already populated in migration 0000; update with brand values.
 update public.site_settings set
-  site_name = 'SpeedFlightz',
+  site_name = 'DiamondThriveLogistics',
   tagline = 'Premium International Shipping & Logistics',
   hero_headline = 'Cargo Without Borders. Delivered on Time, Every Time.',
   hero_subheadline = 'Air, sea, and road freight with end-to-end visibility, live tracking, and dedicated customs handling across 190+ countries.',
   hero_bullets = 'Real-time tracking|Live interactive map|Customs clearance handled|Door-to-door delivery',
-  contact_email = 'support@speedflightz.com',
+  contact_email = 'support@diamondthrivelogistics.com',
   contact_phone = '+1 (816) 555-0140',
   contact_address = '1801 Main Street, Kansas City, MO 64108, United States',
   business_hours = 'Mon – Fri: 08:00 – 18:00  ·  Sat: 09:00 – 14:00',
@@ -19,14 +19,14 @@ update public.site_settings set
   social_instagram = 'https://instagram.com',
   social_youtube   = 'https://youtube.com',
   usdt_trc20_address = 'TXMjZ7MrfUMTFMQ96AwRTJTdsR3NmaL41u',
-  ach_account_holder = 'SpeedFlightz',
+  ach_account_holder = 'DiamondThriveLogistics',
   ach_bank           = 'Lead Bank',
   ach_account_number = '214144811917',
   ach_routing_number = '101019644',
   ach_account_type   = 'Personal Checking',
   ach_bank_address    = '1801 Main Street, Kansas City, MO 64108, United States',
-  seo_title = 'SpeedFlightz — Premium International Shipping & Logistics',
-  seo_description = 'SpeedFlightz delivers air, sea, and road freight with real-time tracking, live maps, customs handling, and global door-to-door delivery.',
+  seo_title = 'DiamondThriveLogistics — Premium International Shipping & Logistics',
+  seo_description = 'DiamondThriveLogistics delivers air, sea, and road freight with real-time tracking, live maps, customs handling, and global door-to-door delivery.',
   seo_keywords = 'international shipping, freight forwarding, logistics, air cargo, sea freight, customs clearance, cargo tracking'
 where id = 1;
 
@@ -82,7 +82,7 @@ on conflict do nothing;
 -- Testimonials
 insert into public.testimonials (author, role, company, avatar_url, quote, rating, sort_order) values
   ('Marcus Holloway', 'Head of Procurement', 'NorthBrew Imports', 'https://i.pravatar.cc/160?img=12',
-   'SpeedFlightz moved our cold-chain containers across three borders with full visibility. The live map alone won them a permanent place on our vendor list.', 5, 1),
+   'DiamondThriveLogistics moved our cold-chain containers across three borders with full visibility. The live map alone won them a permanent place on our vendor list.', 5, 1),
   ('Adaeze Okeke', 'Logistics Director', 'Sahara Distributors', null,
    'They cleared customs faster than any partner we have used, and the dashboard made our finance team happy.', 5, 2),
   ('Tomás Reyes', 'Founder', 'Reyes Textiles', null,
@@ -100,9 +100,9 @@ insert into public.shipments (
   current_lat, current_lng, current_location_label,
   weight_kg, pieces, estimated_delivery, notes
 ) values (
-  'SFZ-DEMO-0001', 'Sea Freight', 'awaiting_payment',
+  'DTL-DEMO-0001', 'Sea Freight', 'awaiting_payment',
   'NorthBrew Imports', 'United States', '1500 Broadway, Kansas City, MO',
-  'Marcus Holloway', 'demo@speedflightz.com', 'Kenya', 'Westlands, Nairobi',
+  'Marcus Holloway', 'demo@diamondthrivelogistics.com', 'Kenya', 'Westlands, Nairobi',
   'Port of Kansas City', 'United States', 39.0998, -94.5786,
   'Port of Mombasa', 'Kenya', -4.0435, 39.6682,
   12.4634, 47.0225, 'Indian Ocean — off Madagascar',
@@ -114,42 +114,42 @@ insert into public.shipments (
 insert into public.shipment_fees (shipment_id, name, description, amount, currency, status, due_date, notes)
 select
   s.id, 'Customs Duty', 'VAT & duty on imported goods', 1820.00, 'USD', 'unpaid', now() + interval '7 days', 'KRA import duty'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 
 insert into public.shipment_fees (shipment_id, name, description, amount, currency, status, due_date, notes)
 select
   s.id, 'Port Charges', 'Mombasa port handling & storage', 420.00, 'USD', 'unpaid', now() + interval '7 days', ''
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 
 insert into public.shipment_fees (shipment_id, name, description, amount, currency, status, due_date, notes)
 select
   s.id, 'Shipping Fee', 'Sea freight main leg', 1980.00, 'USD', 'paid', now() - interval '3 days', ''
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 
 -- sample tracking events for the demo shipment
 insert into public.tracking_events (shipment_id, status, location_label, lat, lng, note, occurred_at)
 select s.id, 'created','Kansas City, USA',39.0998,-94.5786,'Shipment created',now() - interval '8 days'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 insert into public.tracking_events (shipment_id, status, location_label, lat, lng, note, occurred_at)
 select s.id, 'picked_up','Kansas City Hub',39.0998,-94.5786,'Picked up from origin warehouse',now() - interval '7 days'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 insert into public.tracking_events (shipment_id, status, location_label, lat, lng, note, occurred_at)
 select s.id, 'in_transit','Atlantic — mid-ocean',25.0,-30.0,'Loaded onto MV Ocean Pioneer',now() - interval '5 days'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 insert into public.tracking_events (shipment_id, status, location_label, lat, lng, note, occurred_at)
 select s.id, 'in_transit','Indian Ocean — Madagascar EEZ',-12.4634,47.0225,'Tracking via satellite AIS',now() - interval '1 days'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 insert into public.tracking_events (shipment_id, status, location_label, lat, lng, note, occurred_at)
 select s.id, 'awaiting_payment','Port of Mombasa',-4.0435,39.6682,'Awaiting customs duty payment before release',now()
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 
 -- sample images
 insert into public.shipment_images (shipment_id, url, caption, kind, taken_at)
 select s.id, 'https://images.unsplash.com/photo-1553413077-190dd3058711?auto=format&fit=crop&w=1200&q=80','Warehouse palletization','warehouse', now() - interval '8 days'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 insert into public.shipment_images (shipment_id, url, caption, kind, taken_at)
 select s.id, 'https://images.unsplash.com/photo-1494412574745-e8de75a01951?auto=format&fit=crop&w=1200&q=80','Container loading','port', now() - interval '6 days'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';
 insert into public.shipment_images (shipment_id, url, caption, kind, taken_at)
 select s.id, 'https://images.unsplash.com/photo-1577416412292-747c6607f0c7?auto=format&fit=crop&w=1200&q=80','On-deck cargo','progress', now() - interval '3 days'
-from public.shipments s where s.tracking_number = 'SFZ-DEMO-0001';
+from public.shipments s where s.tracking_number = 'DTL-DEMO-0001';

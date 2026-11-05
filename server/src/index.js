@@ -16,7 +16,6 @@ const envOrigins = (process.env.CLIENT_ORIGIN || '')
   .filter(Boolean)
 
 const allowedOrigins = new Set([
-  'https://speedflightz.vercel.app',
   'https://diamondthrivelogistics.com',
   'https://www.diamondthrivelogistics.com',
   'http://localhost:5173',
@@ -64,4 +63,4 @@ app.use((err, _req, res, _next) => {
 })
 
 const port = Number(process.env.PORT || 8787)
-app.listen(port, () => console.log(`SpeedFlightz API on :${port}`))
+app.listen(port, () => console.log(`DiamondThriveLogistics API on :${port}`))

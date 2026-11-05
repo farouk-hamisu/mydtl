@@ -11,7 +11,7 @@ export function RootLayout() {
       <main className="flex-1">
         <Suspense fallback={
           <div className="grid place-items-center gap-4 min-h-[40vh] py-20">
-            <img src="/logo.png" alt="DTL" className="h-16 w-auto rounded-lg animate-pulse" />
+            <img src="/logo.png" alt="DiamondThriveLogistics" className="h-16 w-auto rounded-lg animate-pulse" />
             <span className="inline-block size-6 rounded-full border-2 border-dtl-border border-t-dtl-yellow animate-spin" />
           </div>
         }>

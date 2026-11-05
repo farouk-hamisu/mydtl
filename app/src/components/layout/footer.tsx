@@ -47,7 +47,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-dtl-white/80">
               <li className="flex items-start gap-3 break-words"><MapPin className="size-4 mt-0.5 text-dtl-red shrink-0" /> <span>{settings.contact_address || '1801 Main Street, Kansas City, MO 64108, United States'}</span></li>
               <li className="flex items-center gap-3"><Phone className="size-4 text-dtl-red shrink-0" /> <a href={`tel:${settings.contact_phone || '+1 (415) 498-0913'}`} className="hover:text-white whitespace-nowrap">{settings.contact_phone || '+1 (415) 498-0913'}</a></li>
-              <li className="flex items-start gap-3 break-words"><Mail className="size-4 mt-0.5 text-dtl-red shrink-0" /> <a href={`mailto:${settings.contact_email || 'support@dtl.com'}`} className="hover:text-white">{settings.contact_email || 'support@dtl.com'}</a></li>
+              <li className="flex items-start gap-3 break-words"><Mail className="size-4 mt-0.5 text-dtl-red shrink-0" /> <a href={`mailto:${settings.contact_email || 'support@diamondthrivelogistics.com'}`} className="hover:text-white">{settings.contact_email || 'support@diamondthrivelogistics.com'}</a></li>
             </ul>
             <form className="mt-6 flex gap-2" onSubmit={(e) => { e.preventDefault() }}>
               <input
@@ -62,7 +62,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-dtl-white/50">
-          <p>© {year} DTL Global Logistics. All rights reserved.</p>
+          <p>© {year} DiamondThriveLogistics. All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <a href="#" className="hover:text-white">Privacy Policy</a>
             <a href="#" className="hover:text-white">Terms of Service</a>

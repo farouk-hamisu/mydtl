@@ -1,8 +1,8 @@
 {
-  "name": "speedflightz",
+  "name": "diamondthrivelogistics",
   "version": "1.0.0",
   "private": true,
-  "description": "SpeedFlightz — premium international shipping & logistics platform",
+  "description": "DiamondThriveLogistics — premium international shipping & logistics platform",
   "workspaces": [
     "app",
     "server"

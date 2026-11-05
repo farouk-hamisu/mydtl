@@ -1,5 +1,5 @@
 -- ============================================================
--- SpeedFlightz — initial schema
+-- DiamondThriveLogistics — initial schema
 -- Profiles (RBAC), shipments, tracking events, fees, payments,
 -- notifications, content (gallery/testimonials/services), settings
 -- ============================================================
@@ -227,7 +227,7 @@ create table if not exists public.brand_partners (
 
 create table if not exists public.site_settings (
   id int primary key default 1,
-  site_name text not null default 'SpeedFlightz',
+  site_name text not null default 'DiamondThriveLogistics',
   tagline text,
   hero_headline text,
   hero_subheadline text,
