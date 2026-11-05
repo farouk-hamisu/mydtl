@@ -11,7 +11,7 @@
     "dev": "concurrently -n web,api -c magenta,cyan \"npm run dev -w app\" \"npm run dev -w server\"",
     "dev:web": "npm run dev -w app",
     "dev:api": "npm run dev -w server",
-    "build": "npm run build -w app",
+    "build": "npm run build -w app && node scripts/copy-dist.mjs",
     "lint": "npm run lint -w app",
     "typecheck": "npm run typecheck -w app && npm run typecheck -w server"
   },
