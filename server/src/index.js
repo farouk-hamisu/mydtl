@@ -48,7 +48,13 @@ app.use(cors({
 }))
 app.use(express.json({limit: '12mb'}))
 
-app.get('/api/health', (_req, res) => res.json({ok: true, ts: Date.now()}))
+app.get('/api/health', (_req, res) => {
+  let supabaseHost = null
+  try {
+    supabaseHost = process.env.SUPABASE_URL ? new URL(process.env.SUPABASE_URL).host : null
+  } catch {}
+  res.json({ok: true, ts: Date.now(), supabaseHost})
+})
 
 app.use('/api/auth', authRouter)
 app.use('/api/public', publicRouter)

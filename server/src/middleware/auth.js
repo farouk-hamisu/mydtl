@@ -11,13 +11,21 @@ export async function authUser(req, res, next) {
     if (!token) { req.user = null; return next() }
 
     const { data, error } = await supabaseAnon.auth.getUser(token)
-    if (error || !data?.user) { req.user = null; return next() }
+    if (error || !data?.user) {
+      console.warn('[auth] token rejected:', error?.message ?? 'no user returned')
+      req.user = null
+      return next()
+    }
 
     const { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('id, role, email, full_name, is_active')
       .eq('id', data.user.id)
       .single()
+
+    if (!profile) {
+      console.warn('[auth] no profile for user:', data.user.id, data.user.email)
+    }
 
     req.user = {
       id: data.user.id,
